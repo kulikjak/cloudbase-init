@@ -65,7 +65,7 @@ class TestWindowsUtils(testutils.CloudbaseInitTestBase):
         self._mi_mock = mock.MagicMock()
         self._wmi_mock = mock.MagicMock()
         self._wmi_mock.x_wmi = WMIError
-        self._moves_mock = mock.MagicMock()
+        self._winreg_mock = mock.MagicMock()
         self._xmlrpc_client_mock = mock.MagicMock()
         self._ctypes_mock = mock.MagicMock()
         self._tzlocal_mock = mock.Mock()
@@ -85,12 +85,12 @@ class TestWindowsUtils(testutils.CloudbaseInitTestBase):
              'winerror': self._winerror_mock,
              'mi': self._mi_mock,
              'wmi': self._wmi_mock,
-             'six.moves': self._moves_mock,
-             'six.moves.xmlrpc_client': self._xmlrpc_client_mock,
+             'xmlrpc.client': self._xmlrpc_client_mock,
              'ctypes': self._ctypes_mock,
              'pywintypes': self._pywintypes_mock,
              'tzlocal': self._tzlocal_mock,
-             'winioctlcon': mock.MagicMock()})
+             'winioctlcon': mock.MagicMock(),
+             'winreg': self._winreg_mock})
         _module_patcher.start()
         self.addCleanup(_module_patcher.stop)
 
@@ -99,7 +99,6 @@ class TestWindowsUtils(testutils.CloudbaseInitTestBase):
         with mock.patch("cloudbaseinit.utils.windows.disk.GUID"):
             self.windows_utils = importlib.import_module(module_path)
 
-        self._winreg_mock = self._moves_mock.winreg
         self._windll_mock = self._ctypes_mock.windll
         self._wintypes_mock = self._ctypes_mock.wintypes
         self._client_mock = self._win32com_mock.client
